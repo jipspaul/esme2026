@@ -1,3 +1,6 @@
+import 'package:esme26/adress.dart';
+import 'package:esme26/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,28 +17,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Onboarding'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+   MyHomePage({super.key, required this.title});
 
   final String title;
+  User? user;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController postalCodeController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +51,77 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
+        child: 
+        
+        widget.user != null ? Text('User enrolled: ${widget.user!.firstName} ${widget.user!.lastName}') : ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(16),
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            TextField(
+              controller: firstNameController,
+              decoration: InputDecoration(labelText: 'First Name'),
+              textCapitalization: TextCapitalization.words,
+            ),
+            TextField(
+              controller: lastNameController,
+              decoration: InputDecoration(labelText: 'Last Name'),
+              textCapitalization: TextCapitalization.words,
+            ),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            TextField(
+              controller: birthDateController,
+              decoration: InputDecoration(
+                labelText: 'Birth Date',
+                hintText: 'YYYY-MM-DD',
+              ),
+              keyboardType: TextInputType.datetime,
+            ),
+            TextField(
+              controller: streetController,
+              decoration: InputDecoration(labelText: 'Street'),
+              keyboardType: TextInputType.streetAddress,
+            ),
+            TextField(
+              controller: cityController,
+              decoration: InputDecoration(labelText: 'City'),
+              textCapitalization: TextCapitalization.words,
+            ),
+            TextField(
+              controller: postalCodeController,
+              decoration: InputDecoration(labelText: 'Postal Code'),
+            ),
+            TextField(
+              controller: countryController,
+              decoration: InputDecoration(labelText: 'Country'),
+              textCapitalization: TextCapitalization.words,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Adress adress = Adress(
+                  street: streetController.text,
+                  city: cityController.text,
+                  postalCode: postalCodeController.text,
+                  country: countryController.text,
+                );
+
+                widget.user = User(
+                  firstName: firstNameController.text,
+                  lastName: lastNameController.text,
+                  email: emailController.text,
+                  adress: adress,
+                  birthDateInMillisFromEpoch: DateTime.parse(birthDateController.text).microsecondsSinceEpoch, // Replace with actual value from TextField
+                );
+
+                setState(() {});
+              },
+              child: const Text('Enroll'),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
