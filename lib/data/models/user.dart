@@ -1,4 +1,4 @@
-import 'package:esme26/adress.dart';
+import 'package:esme26/data/models/adress.dart';
 
 class User {
   final String firstName;
