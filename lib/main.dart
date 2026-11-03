@@ -1,4 +1,7 @@
 import 'package:esme26/data/models/adress.dart';
+import 'package:esme26/data/repositories/user_repository.dart';
+import 'package:esme26/data/repositories/user_repository_JP.dart';
+import 'package:esme26/data/repositories/user_repository_impl.dart';
 import 'package:esme26/ui/widgets/onboarding_form_widget.dart';
 import 'package:esme26/data/models/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +30,7 @@ class MyHomePage extends StatefulWidget {
    MyHomePage({super.key, required this.title});
 
   final String title;
-  User? user;
+  UserRepository userRepository = UserRepository.instance;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -42,10 +45,10 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: widget.user != null ? Text('User enrolled: ${widget.user!.firstName} ${widget.user!.lastName}') 
+        child: widget.userRepository.getUser() != null ? Text('User enrolled: ${widget.userRepository.getUser()!.firstName} ${widget.userRepository.getUser()!.lastName}') 
         : OnboardingFormWidget(userCallback: (user) {
             setState(() {
-              widget.user = user;
+              widget.userRepository.setUser(user);
             });
           }),
       ),

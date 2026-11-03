@@ -1,15 +1,10 @@
 import 'package:esme26/data/models/user.dart';
+import 'package:esme26/data/repositories/user_repository_impl.dart';
+import 'package:esme26/data/repositories/user_repository_JP.dart';
 
-class UserRepository {
+abstract class UserRepository {
+  static final UserRepository instance = UserRepositoryJP();
 
-  User? user;
-  
-  User? getUser() {
-    return user;
-  }
-
-  void setUser(User user) {
-    this.user = user;
-  }
-
+  User? getUser();
+  void setUser(User user);
 }
