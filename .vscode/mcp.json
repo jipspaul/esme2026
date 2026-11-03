@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "marionette": {
+      "command": "marionette_mcp",
+      "args": []
+    }
+  }
+}

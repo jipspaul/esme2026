@@ -1,0 +1,50 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "jeli",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define=OFF_USER_ID={{OFF_USER_ID}}",
+                "--dart-define=OFF_PASSWORD={{OFF_PASSWORD}}",
+                "--dart-define=ELEVENLABS_API_KEY={{ELEVENLABS_API_KEY}}",
+                "--dart-define=TRELLO_API_KEY={{TRELLO_API_KEY}}",
+                "--dart-define=TRELLO_TOKEN={{TRELLO_TOKEN}}"
+            ]
+        },
+        {
+            "name": "jeli (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define=OFF_USER_ID={{OFF_USER_ID}}",
+                "--dart-define=OFF_PASSWORD={{OFF_PASSWORD}}",
+                "--dart-define=ELEVENLABS_API_KEY={{ELEVENLABS_API_KEY}}",
+                "--dart-define=TRELLO_API_KEY={{TRELLO_API_KEY}}",
+                "--dart-define=TRELLO_TOKEN={{TRELLO_TOKEN}}"
+            ]
+        },
+        {
+            "name": "jeli (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=OFF_USER_ID={{OFF_USER_ID}}",
+                "--dart-define=OFF_PASSWORD={{OFF_PASSWORD}}",
+                "--dart-define=ELEVENLABS_API_KEY={{ELEVENLABS_API_KEY}}",
+                "--dart-define=TRELLO_API_KEY={{TRELLO_API_KEY}}",
+                "--dart-define=TRELLO_TOKEN={{TRELLO_TOKEN}}"
+            ]
+        },
+        {
+            "name": "jeli_pro (chrome)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "apps/jeli_pro",
+            "deviceId": "chrome"
+        },
+    ]
+}

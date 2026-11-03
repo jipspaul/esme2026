@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "davidanson.vscode-markdownlint",
+    "dart-code.flutter",
+    "alexisvt.flutter-snippets",
+    "localizely.flutter-intl",
+    "marcelovelasquez.flutter-tree",
+    "felixangelov.bloc",
+    "nolancorcoran.dart-getter-setter",
+    "aziznal.dart-import-sorter",
+    "mathiasfrohlich.kotlin",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "pflannery.vscode-versionlens",
+    "sswg.swift-lang",
+    "redhat.vscode-xml",
+    "redhat.vscode-yaml",
+    "SimonSiefke.svg-preview"
+  ]
+}

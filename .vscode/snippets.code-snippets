@@ -1,0 +1,95 @@
+{
+	// Place your deepomatic_lens workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+  "Generate API Service": {
+    "scope": "dart",
+    "prefix": "api",
+    "body": [
+      "library api_${1:model};",
+      "",
+      "import 'dart:async';",
+      "import 'dart:io';",
+      "",
+      "import 'package:chopper/chopper.dart';",
+      "import 'package:chopper_built_value/chopper_built_value.dart';",
+      "import 'package:http/io_client.dart' as http;",
+      "",
+      "import 'package:deepomatic_lens/interceptors/auth_header.dart';",
+      "import 'package:deepomatic_lens/interceptors/language_header.dart';",
+      "",
+      "part 'api_${1:model}.chopper.dart';",
+      "",
+      "@ChopperApi(baseUrl: '/${1:model}s')",
+      "abstract class Api${2:Model}Service extends ChopperService {",
+      "  // a helper method to quickly create an instance of the service",
+      "  static Api${2:Model}Service create(String baseUrl) {",
+      "    final client = ChopperClient(",
+      "      client: http.IOClient(",
+      "        HttpClient()..connectionTimeout = const Duration(seconds: ${3:5}),",
+      "      ),",
+      "      baseUrl: Uri.parse(baseUrl),",
+      "      services: [",
+      "        _$Api${2:Model}Service(),",
+      "      ],",
+      "      interceptors: [",
+      "        AuthHeaderInterceptor(),",
+      "        LangHeaderInterceptor(),",
+      "        const HeadersInterceptor({'Content-Type': 'application/json'}),",
+      "        HttpLoggingInterceptor(),",
+      "        CurlInterceptor(),",
+      "      ],",
+      "      converter: BuiltValueConverter(${1/_//g:model}Serializers),",
+      "    );",
+      "    return _$Api${2:Model}Service(client);",
+      "  }",
+      "}",
+      ""
+    ],
+    "description": "Generate API Service"
+  },
+  "Generate Test for Repo Model": {
+    "scope": "dart",
+    "prefix": "testmodel",
+    "body": [
+      "import 'package:test/test.dart';",
+      "",
+      "import 'package:${1:collect}_api/models.dart' as raw;",
+      "import 'package:${1:collect}_repository/models.dart';",
+      "",
+      "void main() {",
+      "  group('${2:Model}', () {",
+      "    test('fromResponse', () {",
+      "    });",
+      "",
+      "    test('fromJson', () {",
+      "    });",
+      "",
+      "    test('toJson', () {",
+      "    });",
+      "",
+      "    test('copyWith', () {",
+      "    });",
+      "",
+      "    test('equatable', () {",
+      "    });",
+      "  });",
+      "}",
+      ""
+    ],
+    "description": "Generate Test for Repo Model"
+  },
+}

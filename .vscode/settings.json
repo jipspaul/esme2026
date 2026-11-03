@@ -1,0 +1,45 @@
+{
+  "dart.debugExternalPackageLibraries": false,
+  "dart.debugSdkLibraries": false,
+  "dart.lineLength": 150,
+  // Melos monorepo: the Flutter app lives in apps/jeli (depth 2) and packages in packages/* —
+  // the workspace root pubspec is NOT a Flutter app. Let Dart-Code scan deep enough to discover
+  // every project so the Flutter extension activates (device picker, "Flutter: Launch Emulator").
+  "dart.projectSearchDepth": 5,
+  "[dart]": {
+      "editor.defaultFormatter": "Dart-Code.dart-code",
+      "editor.codeActionsOnSave": {
+          "source.organizeImports": "always",
+          "source.fixAll": "always",
+          "source.quickFix": "always"
+      },
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      "editor.formatOnType": true,
+      "editor.rulers": [
+          150
+      ],
+      // disable built-in highlighting and use Dart's ability to highlight only exact references
+      "editor.selectionHighlight": false
+  },
+  // always switch to debugging console when starting a debug session
+  "debug.internalConsoleOptions": "openOnSessionStart",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "markdownlint.config": {
+    "default": true,
+    "MD041": false,
+    "no-hard-tabs": true
+  },
+  "dart.devToolsBrowser": "default",
+  "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
+  "lldb.launch.expressions": "native",
+    "dart.flutterSdkPath": "${env:HOME}/.puro/envs/jeli/flutter",
+    "dart.sdkPath": "${env:HOME}/.puro/envs/jeli/flutter/bin/cache/dart-sdk",
+  // Firebase Dashboard config lives in each dev's personal User settings (Cmd+, → User),
+  // because it references a personal service-account key path that should not be in git.
+  // See docs/monorepo-workspaces.md for the snippet to paste.
+  "chat.tools.terminal.autoApprove": {
+    "timeout": true
+  }
+}

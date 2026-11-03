@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "xcode-code-signing",
+            "type": "shell",
+            "command": "zsh -l -i -c 'cd \"${workspaceFolder}\" && bundle exec fastlane ios xcode_code_signing_check'",
+            "options": {
+                "env": {
+                    "FASTLANE_SKIP_GIT_CHECK": "1",
+                    "FASTLANE_HIDE_TIMESTAMP": "true"
+                }
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "patrol-develop",
+            "type": "shell",
+            "command": "patrol",
+            "args": ["develop", "--target", "integration_test/app_launch_test.dart"],
+            "options": { "cwd": "${workspaceFolder}/apps/jeli" },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "patrol-test",
+            "type": "shell",
+            "command": "patrol",
+            "args": ["test", "--target", "integration_test/app_launch_test.dart"],
+            "options": { "cwd": "${workspaceFolder}/apps/jeli" },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
