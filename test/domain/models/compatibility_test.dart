@@ -7,9 +7,19 @@ import 'package:esme26/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  setUp(() {
+    UserRepositoryJP().reset();
+    UserRepositoryImpl().reset();
+  });
+  tearDown(() {
+    UserRepositoryJP().reset();
+    UserRepositoryImpl().reset();
+  });
+
   test('UserRepositoryImpl returns the same instance', () {
     expect(UserRepositoryImpl(), same(UserRepositoryImpl()));
-    expect(UserRepository.instance, same(UserRepositoryImpl()));
+    expect(UserRepositoryJP(), same(UserRepositoryJP()));
+    expect(UserRepository.instance, same(UserRepositoryJP()));
   });
 
   test('existing repositories can store and return domain users', () {
@@ -38,7 +48,7 @@ void main() {
   testWidgets('existing home screen still displays the repository user', (
     tester,
   ) async {
-    final user = UserRepositoryImpl().getUser()!;
+    final user = UserRepository.instance.getUser()!;
     await tester.pumpWidget(const MyApp());
     expect(find.text('Onboarding'), findsOneWidget);
     expect(

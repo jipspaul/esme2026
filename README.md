@@ -33,9 +33,10 @@ import 'package:esme26/domain/models/models.dart';
 - `data/models` : les anciens imports de `User` et `Adress` restent disponibles
   par reexport, sans dupliquer les classes. Les futurs DTO et conversions
   JSON/API/base de donnees doivent vivre dans cette couche, pas dans le domaine.
-- Les contrats de repositories et les cas d'utilisation futurs appartiennent
-  au domaine ; leurs implementations appartiennent a `data/repositories`.
-  Les repositories existants ne sont pas restructures par cet ajout.
+- Les contrats de repositories sont dans `domain/repositories` ; leurs
+  implementations mockees et points d'acces singleton sont dans
+  `data/repositories`. Les cas d'utilisation dependent uniquement des contrats
+  du domaine.
 
 ### Catalogue
 
@@ -98,4 +99,111 @@ Validation ciblee :
 ```bash
 dart analyze lib/domain/models lib/data/models test/domain/models
 flutter test test/domain/models
+```
+
+## Repositories et donnees mockees
+
+Chaque entite du catalogue dispose d'un contrat dans
+[`lib/domain/repositories/`](lib/domain/repositories/), d'un point d'acces
+`XRepository.instance` et d'une implementation `XRepositoryImpl` dans
+[`lib/data/repositories/`](lib/data/repositories/).
+Le contrat commun `Repository<T, K>` propose des operations synchrones :
+
+- `getAll()` : instantane non modifiable de la collection ;
+- `getById(id)` : entite ou `null` si absente ;
+- `save(entity)` : ajout ou remplacement par cle, avec identifiant non vide
+  obligatoire (pas de generation implicite) ;
+- `delete(id)` : suppression, ou `StateError` si la cle est absente.
+
+```dart
+import 'package:esme26/data/repositories/repositories.dart';
+
+final repository = WorkRequestRepository.instance;
+final requests = repository.getAll();
+final request = repository.getById('request-1');
+if (request != null) {
+  repository.save(request);
+}
+
+final favorites = FavoriteRepository.instance;
+final favorite = favorites.getById((
+  customerId: 'customer-1',
+  artisanId: 'artisan-1',
+));
+```
+
+Les profils sont indexes par `userId`. Les favoris utilisent une cle composee
+`FavoriteId` (record nomme `customerId`/`artisanId`), sans concatenation de chaines.
+Les autres entites utilisent leur `id`.
+
+### Singletons et injection
+
+Les implementations suivent le pattern existant : champ statique prive
+`_instance`, constructeur prive `_internal`, constructeur `factory` renvoyant
+toujours la meme instance. L'acces par interface et par implementation partage
+donc le meme etat :
+
+```dart
+import 'package:esme26/data/repositories/trade_repository.dart';
+import 'package:esme26/data/repositories/trade_repository_impl.dart';
+
+final sameInstance = identical(
+  TradeRepository.instance,
+  TradeRepositoryImpl(),
+); // true
+```
+
+Le domaine n'importe jamais ces singletons : les petits points d'acces dans
+`data/repositories` implementent les contrats du domaine et choisissent les
+implementations, afin de conserver `XRepository.instance` sans dependance
+`domain -> data`. Dans un cas d'utilisation, injecter le contrat du domaine :
+
+```dart
+import 'package:esme26/domain/repositories/work_request_repository.dart';
+
+class ListWorkRequests {
+  final WorkRequestRepository repository;
+  ListWorkRequests(this.repository);
+}
+```
+
+`UserRepository.instance` conserve l'implementation selectionnee
+`UserRepositoryJP`, qui est maintenant elle aussi un vrai singleton.
+`UserRepositoryImpl()` reste disponible comme singleton alternatif, avec son
+propre stockage. `getUser()` et `setUser()` sont conserves pour l'inscription.
+Un utilisateur sans `id` peut etre selectionne comme brouillon mais n'est pas
+ajoute au catalogue ; avec un `id`, `setUser` l'enregistre aussi. Modifier le
+compte courant via `save` actualise la session ; le supprimer la vide.
+
+### Contenu et limites des mocks
+
+[`lib/data/mocks/mock_data.dart`](lib/data/mocks/mock_data.dart) contient des
+donnees fictives et deterministes : particulier, artisan, metiers, medias,
+assurance, realisation, deux demandes/devis/chantiers, rendez-vous,
+disponibilites, conversation/messages, avis, factures/paiements, remboursement,
+litige, favoris et notifications. Les identifiants, montants et relations
+sont coherents au chargement ; les dates sont fixes et en UTC. Les URL en
+`example.test` sont des placeholders, pas des fichiers accessibles.
+
+`Adress`, `GeoPoint`, `Money`, `Budget`, `TimeSlot`, `ServiceArea` et `QuoteLine`
+sont des objets-valeurs inclus dans les entites mockees. Ils n'ont pas de
+repository independant, car ils n'ont pas d'identite autonome.
+
+Le stockage est en memoire dans l'isolate courant : il est partage entre les
+acces au meme singleton, mais perdu au redemarrage. Aucun appel reseau,
+persistance disque, paiement reel, controle d'autorisation, cascade de
+suppression, transaction ni validation des relations entre repositories
+n'est simule. Les regles metier restent a implementer dans les cas
+d'utilisation/backend.
+
+Les implementations exposent `reset()` pour restaurer leurs fixtures pendant
+les tests/demonstrations, sans changer l'instance singleton. Cette methode ne
+fait pas partie des contrats du domaine et ne reinitialise pas les autres
+repositories.
+
+Validation ciblee des repositories et de la compatibilite existante :
+
+```bash
+dart analyze lib/domain/repositories lib/data/repositories lib/data/mocks test/data/repositories test/domain/models
+flutter test test/data/repositories test/domain/models
 ```
