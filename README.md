@@ -17,6 +17,39 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 # esme2026
 
+## Onboarding (sans persistance)
+
+L'application ouvre actuellement l'onboarding au lancement ; l'authentification
+et la detection d'une premiere connexion ne sont pas encore branchees.
+Aucun utilisateur ni avancement n'est enregistre dans un repository.
+Un redemarrage recommence donc le parcours.
+
+- Artisan : choix du profil -> metier -> localisation -> KYC -> accueil.
+- Particulier : choix du profil -> centres d'interet artisanaux -> prenom et nom
+  -> localisation -> accueil.
+
+La machine a etats Dart pure est dans
+[`onboarding_flow.dart`](lib/domain/onboarding/onboarding_flow.dart).
+[`OnboardingController`](lib/application/onboarding_controller.dart) pilote cette
+machine, les saisies, le retour arriere et le KYC asynchrone, hors de l'UI.
+La page gere uniquement le cycle de vie du controleur et observe ses notifications.
+Les widgets `OnboardingView` et `OnboardingStepView` affichent l'etat et transmettent
+les actions, sans decider des transitions ni appeler les repositories.
+Chaque ecran possede son propre widget dans
+[`ui/widgets/onboarding`](lib/ui/widgets/onboarding/). Les saisies sont conservees
+en memoire lors d'un retour arriere ; changer de profil efface les saisies
+specifiques a l'ancien profil.
+
+Le contrat [`KycRepository`](lib/domain/repositories/kyc_repository.dart) est
+injectable. Comme les autres repositories, la facade
+[`KycRepository.instance`](lib/data/repositories/kyc_repository.dart) expose le
+singleton [`KycRepositoryImpl`](lib/data/repositories/kyc_repository_impl.dart).
+L'onboarding utilise ce singleton par defaut. Cette implementation mockee
+simule une approbation asynchrone, sans document, appel reseau ni verification
+reelle. L'interface signale explicitement cette simulation ; refus et erreurs
+`KycException` permettent de reessayer. Ce resultat ne confere aucun statut
+verifie au compte ou au profil artisan.
+
 ## Modeles metier : particuliers et artisans
 
 Les classes sont dans [`lib/domain/models/`](lib/domain/models/).

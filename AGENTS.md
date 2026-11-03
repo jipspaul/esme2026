@@ -14,24 +14,36 @@ flutter test test/widget_test.dart                # single test file
 flutter test --plain-name "Counter increments"    # single test by name
 ```
 
-`test/widget_test.dart` is still the default Flutter counter template and does not match the current UI (no counter / `+` button), so it fails until rewritten.
+`test/widget_test.dart` exercises the onboarding flows, validation and KYC retries.
 
 ## Architecture
 
-Code under `lib/` follows a layered layout (some layers are placeholders with only `.gitkeep`):
+Code under `lib/` follows a layered layout:
 
-- `lib/data/models/` — plain immutable data classes (`final` fields, named `required` constructor params). `User` composes an `Adress`.
-- `lib/data/repositories/` — reserved for data access (empty).
-- `lib/domain/` — reserved for business logic (empty).
-- `lib/ui/pages/` — reserved for full-screen pages (empty; `MyHomePage` currently lives in `lib/main.dart`).
-- `lib/ui/widgets/` — reusable widgets, e.g. `OnboardingFormWidget`.
+- `lib/data/models/` — compatibility exports for domain models.
+- `lib/data/repositories/` — singleton facades and mock implementations.
+- `lib/domain/` — pure Dart models, repository interfaces and onboarding state machine.
+- `lib/application/` — controllers coordinating domain transitions and repositories.
+- `lib/ui/pages/` — page composition and controller lifecycle.
+- `lib/ui/widgets/` — dedicated presentation widgets.
 
-Data flow: `OnboardingFormWidget` owns `TextEditingController`s for each field, builds an `Adress` + `User` on "Enroll", and hands it up via the `userCallback(User)` constructor callback. `MyHomePage` (in `main.dart`) stores the `User` and, via `setState`, swaps the form for a confirmation `Text`. There is no state-management package or persistence yet — state is passed through constructor callbacks.
+Data flow: `OnboardingController` owns the domain `OnboardingFlow`, draft inputs
+and asynchronous KYC orchestration. Widgets observe notifications and forward
+user actions. Onboarding state is in memory only, without persistence.
+
+## UI separation of concerns
+
+- Use dedicated widget classes rather than widget-returning helper methods such
+  as `_buildStep`. Construct UI in each widget's `build` method.
+- Keep state-machine transitions, branching rules, repository calls and async
+  orchestration outside the UI. Controllers coordinate the domain; widgets only
+  render state, perform form presentation/validation and forward actions.
+- Follow the repository interface + singleton facade + implementation pattern.
 
 ## Conventions
 
 - Use package imports (`package:esme26/...`), not relative imports.
 - The address class/file/field is spelled `Adress` / `adress.dart` / `user.adress` throughout — keep that spelling consistent when referencing it rather than introducing `Address`.
-- Birth dates are stored as an `int` epoch in `User.birthDateInMillisFromEpoch`, parsed from a `YYYY-MM-DD` text field. Note the form currently uses `microsecondsSinceEpoch`, which mismatches the field name.
+- Birth dates are stored as an `int` epoch in milliseconds in `User.birthDateInMillisFromEpoch`.
 - Dart dot-shorthand syntax is used (e.g. `colorScheme: .fromSeed(...)`), which relies on the recent SDK constraint.
 - Platform folders (`android/`, `ios/`, `web/`, `macos/`, `linux/`, `windows/`) and `build/` are excluded from analysis; app code lives only in `lib/`.

@@ -9,6 +9,7 @@ export 'package:esme26/data/repositories/dispute_repository.dart';
 export 'package:esme26/data/repositories/favorite_repository.dart';
 export 'package:esme26/data/repositories/invoice_repository.dart';
 export 'package:esme26/data/repositories/job_repository.dart';
+export 'package:esme26/data/repositories/kyc_repository.dart';
 export 'package:esme26/data/repositories/message_repository.dart';
 export 'package:esme26/data/repositories/payment_repository.dart';
 export 'package:esme26/data/repositories/portfolio_project_repository.dart';
