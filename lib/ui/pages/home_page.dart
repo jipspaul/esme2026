@@ -9,38 +9,33 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Accueil', style: Theme.of(context).textTheme.titleLarge),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                role == UserRole.artisan
-                    ? Icons.handyman_outlined
-                    : Icons.home_outlined,
-                size: 64,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                firstName.trim().isEmpty
-                    ? 'Bienvenue dans votre espace artisan !'
-                    : 'Bienvenue ${firstName.trim()} !',
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Votre parcours de découverte est terminé.',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              role == UserRole.artisan
+                  ? Icons.handyman_outlined
+                  : Icons.home_outlined,
+              size: 64,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              firstName.trim().isEmpty
+                  ? 'Bienvenue dans votre espace artisan !'
+                  : 'Bienvenue ${firstName.trim()} !',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Votre parcours de découverte est terminé.',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
         ),
       ),
     );
