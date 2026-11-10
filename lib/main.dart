@@ -1,4 +1,5 @@
 import 'package:esme26/ui/pages/onboarding_page.dart';
+import 'package:esme26/ui/router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,13 +8,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static final _router = createRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Artisanat',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const OnboardingPage(),
+      routerConfig: _router,
     );
   }
 }
