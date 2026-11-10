@@ -1,12 +1,7 @@
 import 'package:esme26/domain/models/artisan_profile.dart';
 import 'package:esme26/domain/models/attachment.dart';
 
-enum ProfessionalDocumentKind {
-  registration,
-  qualification,
-  liabilityInsurance,
-  decennialInsurance,
-}
+enum ProfessionalDocumentKind { registration, qualification, liabilityInsurance, decennialInsurance }
 
 class ProfessionalDocument {
   final String id;

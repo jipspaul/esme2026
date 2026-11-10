@@ -12,8 +12,7 @@ class InMemoryRepository<T, K extends Object> implements Repository<T, K> {
   final List<T> _seed;
   final Map<K, T> _items = {};
 
-  InMemoryRepository(Iterable<T> seed, {required this.keyOf})
-    : _seed = List.unmodifiable(seed) {
+  InMemoryRepository(Iterable<T> seed, {required this.keyOf}) : _seed = List.unmodifiable(seed) {
     for (final entity in _seed) {
       final key = keyOf(entity);
       if (_items.containsKey(key)) {

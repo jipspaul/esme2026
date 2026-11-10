@@ -17,16 +17,8 @@ class OnboardingStepView extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (controller.step) {
       OnboardingStep.role => RoleStep(onSelected: controller.chooseRole),
-      OnboardingStep.trade => TradeStep(
-        initialValue: controller.trade,
-        onChanged: controller.updateTrade,
-        onNext: controller.next,
-      ),
-      OnboardingStep.interests => InterestsStep(
-        selected: controller.interests,
-        onToggle: controller.toggleInterest,
-        onNext: controller.next,
-      ),
+      OnboardingStep.trade => TradeStep(initialValue: controller.trade, onChanged: controller.updateTrade, onNext: controller.next),
+      OnboardingStep.interests => InterestsStep(selected: controller.interests, onToggle: controller.toggleInterest, onNext: controller.next),
       OnboardingStep.name => NameStep(
         firstName: controller.firstName,
         lastName: controller.lastName,
@@ -49,9 +41,7 @@ class OnboardingStepView extends StatelessWidget {
         error: controller.kycError,
         onVerify: controller.verifyIdentity,
       ),
-      OnboardingStep.completed => throw StateError(
-        'Onboarding already completed.',
-      ),
+      OnboardingStep.completed => throw StateError('Onboarding already completed.'),
     };
   }
 }

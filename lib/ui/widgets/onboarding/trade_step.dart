@@ -5,12 +5,7 @@ class TradeStep extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onNext;
 
-  const TradeStep({
-    super.key,
-    required this.initialValue,
-    required this.onChanged,
-    required this.onNext,
-  });
+  const TradeStep({super.key, required this.initialValue, required this.onChanged, required this.onNext});
 
   @override
   State<TradeStep> createState() => _TradeStepState();
@@ -26,23 +21,14 @@ class _TradeStepState extends State<TradeStep> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Quel est votre métier ?',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
+          Text('Quel est votre métier ?', style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 24),
           TextFormField(
             initialValue: widget.initialValue,
-            decoration: const InputDecoration(
-              labelText: 'Métier',
-              hintText: 'Ex. : menuisier, potier, électricien…',
-              border: OutlineInputBorder(),
-            ),
+            decoration: const InputDecoration(labelText: 'Métier', hintText: 'Ex. : menuisier, potier, électricien…', border: OutlineInputBorder()),
             textCapitalization: TextCapitalization.sentences,
             onChanged: widget.onChanged,
-            validator: (value) => value == null || value.trim().isEmpty
-                ? 'Indiquez votre métier.'
-                : null,
+            validator: (value) => value == null || value.trim().isEmpty ? 'Indiquez votre métier.' : null,
           ),
           const SizedBox(height: 24),
           FilledButton(

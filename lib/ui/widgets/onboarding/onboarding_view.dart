@@ -19,13 +19,7 @@ class OnboardingView extends StatelessWidget {
           title: const Text('Faisons connaissance'),
           leading: controller.isChoosingRole
               ? null
-              : IconButton(
-                  tooltip: 'Retour',
-                  onPressed: controller.canGoBack
-                      ? controller.requestBack
-                      : null,
-                  icon: const Icon(Icons.arrow_back),
-                ),
+              : IconButton(tooltip: 'Retour', onPressed: controller.canGoBack ? controller.requestBack : null, icon: const Icon(Icons.arrow_back)),
         ),
         body: SafeArea(
           child: Align(
@@ -38,9 +32,7 @@ class OnboardingView extends StatelessWidget {
                   if (controller.isChoosingRole)
                     const Text('Votre profil')
                   else ...[
-                    Text(
-                      'Étape ${controller.stepNumber} sur ${controller.stepCount}',
-                    ),
+                    Text('Étape ${controller.stepNumber} sur ${controller.stepCount}'),
                     const SizedBox(height: 8),
                     LinearProgressIndicator(value: controller.progress),
                   ],

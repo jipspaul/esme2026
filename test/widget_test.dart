@@ -29,9 +29,7 @@ Future<void> fillLocation(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('Role selection uses two elevated clickable cards', (
-    tester,
-  ) async {
+  testWidgets('Role selection uses two elevated clickable cards', (tester) async {
     await tester.pumpWidget(const MyApp());
     expect(find.text('Votre profil'), findsOneWidget);
     expect(find.text('Je suis artisan'), findsOneWidget);
@@ -42,15 +40,10 @@ void main() {
     expect(find.byType(InkWell), findsNWidgets(2));
   });
 
-  testWidgets('Customer flow validates fields and reaches home without KYC', (
-    tester,
-  ) async {
+  testWidgets('Customer flow validates fields and reaches home without KYC', (tester) async {
     await tester.pumpWidget(const MyApp());
     await tapText(tester, 'Je suis particulier');
-    expect(
-      tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
-      isNull,
-    );
+    expect(tester.widget<FilledButton>(find.byType(FilledButton)).onPressed, isNull);
     await tapText(tester, 'Poterie et céramique');
     await tapText(tester, 'Continuer');
     await tapText(tester, 'Continuer');
@@ -69,9 +62,7 @@ void main() {
     expect(find.byTooltip('Retour'), findsNothing);
   });
 
-  testWidgets('Artisan flow validates trade and waits for mock KYC', (
-    tester,
-  ) async {
+  testWidgets('Artisan flow validates trade and waits for mock KYC', (tester) async {
     await tester.pumpWidget(const MyApp());
     await tapText(tester, 'Je suis artisan');
     await tapText(tester, 'Continuer');
@@ -84,19 +75,14 @@ void main() {
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(find.text('Accueil'), findsNothing);
-    expect(
-      tester.widget<IconButton>(find.byType(IconButton)).onPressed,
-      isNull,
-    );
+    expect(tester.widget<IconButton>(find.byType(IconButton)).onPressed, isNull);
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(find.text('Accueil'), findsOneWidget);
     expect(find.text('Bienvenue dans votre espace artisan !'), findsOneWidget);
   });
 
-  testWidgets('Back preserves draft inputs and allows switching role', (
-    tester,
-  ) async {
+  testWidgets('Back preserves draft inputs and allows switching role', (tester) async {
     await tester.pumpWidget(const MyApp());
     await tapText(tester, 'Je suis particulier');
     await tapText(tester, 'Décoration');
@@ -104,12 +90,7 @@ void main() {
     await enterField(tester, 'Prénom', 'Camille');
     await tester.tap(find.byTooltip('Retour'));
     await tester.pumpAndSettle();
-    expect(
-      tester
-          .widget<FilterChip>(find.widgetWithText(FilterChip, 'Décoration'))
-          .selected,
-      isTrue,
-    );
+    expect(tester.widget<FilterChip>(find.widgetWithText(FilterChip, 'Décoration')).selected, isTrue);
     await tapText(tester, 'Continuer');
     expect(find.text('Camille'), findsOneWidget);
     await enterField(tester, 'Nom', 'Martin');
@@ -129,13 +110,9 @@ void main() {
     expect(find.text('Comment vous appelez-vous ?'), findsNothing);
   });
 
-  testWidgets('KYC rejection and provider failure are visible and retryable', (
-    tester,
-  ) async {
+  testWidgets('KYC rejection and provider failure are visible and retryable', (tester) async {
     final provider = _ControlledKycRepository();
-    await tester.pumpWidget(
-      MaterialApp(home: OnboardingPage(kycRepository: provider)),
-    );
+    await tester.pumpWidget(MaterialApp(home: OnboardingPage(kycRepository: provider)));
     await tapText(tester, 'Je suis artisan');
     await enterField(tester, 'Métier', 'Potier');
     await tapText(tester, 'Continuer');
@@ -168,9 +145,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('A fresh app starts onboarding again without persistence', (
-    tester,
-  ) async {
+  testWidgets('A fresh app starts onboarding again without persistence', (tester) async {
     await tester.pumpWidget(const MyApp());
     await tapText(tester, 'Je suis artisan');
     await enterField(tester, 'Métier', 'Potier');
@@ -181,9 +156,7 @@ void main() {
     expect(find.text('Potier'), findsNothing);
   });
 
-  testWidgets('Onboarding remains scrollable on a small screen', (
-    tester,
-  ) async {
+  testWidgets('Onboarding remains scrollable on a small screen', (tester) async {
     tester.view.physicalSize = const Size(320, 480);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);

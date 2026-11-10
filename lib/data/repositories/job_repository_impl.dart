@@ -3,10 +3,8 @@ import 'package:esme26/data/repositories/in_memory_repository.dart';
 import 'package:esme26/data/repositories/job_repository.dart';
 import 'package:esme26/domain/models/job.dart';
 
-class JobRepositoryImpl extends InMemoryRepository<Job, String>
-    implements JobRepository {
+class JobRepositoryImpl extends InMemoryRepository<Job, String> implements JobRepository {
   static final JobRepositoryImpl _instance = JobRepositoryImpl._internal();
   factory JobRepositoryImpl() => _instance;
-  JobRepositoryImpl._internal()
-    : super(MockData.jobs, keyOf: (item) => requireRepositoryId(item.id));
+  JobRepositoryImpl._internal() : super(MockData.jobs, keyOf: (item) => requireRepositoryId(item.id));
 }

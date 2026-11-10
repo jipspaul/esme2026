@@ -20,9 +20,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   void initState() {
     super.initState();
-    _controller = OnboardingController(
-      kycRepository: widget.kycRepository ?? data.KycRepository.instance,
-    );
+    _controller = OnboardingController(kycRepository: widget.kycRepository ?? data.KycRepository.instance);
   }
 
   @override
@@ -35,9 +33,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: _controller,
-      builder: (context, _) => _controller.isCompleted
-          ? HomePage(role: _controller.role!, firstName: _controller.firstName)
-          : OnboardingView(controller: _controller),
+      builder: (context, _) =>
+          _controller.isCompleted ? HomePage(role: _controller.role!, firstName: _controller.firstName) : OnboardingView(controller: _controller),
     );
   }
 }

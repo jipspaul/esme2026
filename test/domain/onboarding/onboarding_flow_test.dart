@@ -18,12 +18,7 @@ void main() {
     expect(flow.next, throwsStateError);
     expect(flow.back, throwsStateError);
     flow.chooseRole(UserRole.artisan);
-    expect(flow.steps, [
-      OnboardingStep.role,
-      OnboardingStep.trade,
-      OnboardingStep.location,
-      OnboardingStep.kyc,
-    ]);
+    expect(flow.steps, [OnboardingStep.role, OnboardingStep.trade, OnboardingStep.location, OnboardingStep.kyc]);
     expect(flow.stepNumber, 2);
     expect(flow.next, throwsStateError);
     flow.trade = '   ';
@@ -48,12 +43,7 @@ void main() {
 
   test('Customer requires interests, name and location, without KYC', () {
     flow.chooseRole(UserRole.customer);
-    expect(flow.steps, [
-      OnboardingStep.role,
-      OnboardingStep.interests,
-      OnboardingStep.name,
-      OnboardingStep.location,
-    ]);
+    expect(flow.steps, [OnboardingStep.role, OnboardingStep.interests, OnboardingStep.name, OnboardingStep.location]);
     expect(flow.next, throwsStateError);
     flow.toggleInterest('Bois');
     flow.toggleInterest('Bois');

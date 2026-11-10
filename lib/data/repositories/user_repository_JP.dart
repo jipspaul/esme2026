@@ -3,8 +3,7 @@ import 'package:esme26/data/repositories/in_memory_user_repository.dart';
 import 'package:esme26/data/repositories/user_repository.dart';
 import 'package:esme26/domain/models/user.dart';
 
-class UserRepositoryJP extends InMemoryUserRepository
-    implements UserRepository {
+class UserRepositoryJP extends InMemoryUserRepository implements UserRepository {
   static final UserRepositoryJP _instance = UserRepositoryJP._internal();
   factory UserRepositoryJP() => _instance;
   UserRepositoryJP._internal();

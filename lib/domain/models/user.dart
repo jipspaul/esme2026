@@ -32,11 +32,7 @@ class User {
     this.createdAt,
   }) : roles = Set.unmodifiable(roles) {
     if (roles.isEmpty) {
-      throw ArgumentError.value(
-        roles,
-        'roles',
-        'At least one role is required',
-      );
+      throw ArgumentError.value(roles, 'roles', 'At least one role is required');
     }
   }
 }

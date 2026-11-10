@@ -52,11 +52,7 @@ class ArtisanProfile {
       throw ArgumentError('An artisan needs a trade and a service area');
     }
     if (yearsOfExperience < 0) {
-      throw ArgumentError.value(
-        yearsOfExperience,
-        'yearsOfExperience',
-        'Must be non-negative',
-      );
+      throw ArgumentError.value(yearsOfExperience, 'yearsOfExperience', 'Must be non-negative');
     }
   }
 }

@@ -6,13 +6,7 @@ class MockData {
 
   static final createdAt = DateTime.utc(2026, 10, 1, 8);
   static final location = GeoPoint(latitude: 48.8566, longitude: 2.3522);
-  static final adress = Adress(
-    street: '1 rue de la Demonstration',
-    city: 'Paris',
-    postalCode: '75001',
-    country: 'France',
-    location: location,
-  );
+  static final adress = Adress(street: '1 rue de la Demonstration', city: 'Paris', postalCode: '75001', country: 'France', location: location);
   static final customer = User(
     id: 'customer-1',
     firstName: 'JP',
@@ -35,18 +29,11 @@ class MockData {
   static final List<User> users = List.unmodifiable([customer, artisan]);
 
   static final List<CustomerProfile> customerProfiles = List.unmodifiable([
-    const CustomerProfile(
-      userId: 'customer-1',
-      presentation: 'Particulier souhaitant renover son logement.',
-    ),
+    const CustomerProfile(userId: 'customer-1', presentation: 'Particulier souhaitant renover son logement.'),
   ]);
   static final List<Trade> trades = List.unmodifiable([
     const Trade(id: 'trade-painting', name: 'Peinture'),
-    const Trade(
-      id: 'trade-interior-painting',
-      name: 'Peinture interieure',
-      parentTradeId: 'trade-painting',
-    ),
+    const Trade(id: 'trade-interior-painting', name: 'Peinture interieure', parentTradeId: 'trade-painting'),
   ]);
   static final List<ArtisanProfile> artisanProfiles = List.unmodifiable([
     ArtisanProfile(
@@ -54,8 +41,7 @@ class MockData {
       companyName: 'Atelier Demo',
       registrationNumber: 'MOCK-FR-001',
       registrationCountryCode: 'FR',
-      description:
-          'Entreprise fictive de peinture et de renovation interieure.',
+      description: 'Entreprise fictive de peinture et de renovation interieure.',
       businessAdress: adress,
       tradeIds: {'trade-interior-painting'},
       serviceAreas: [ServiceArea(center: location, radiusInKm: 25)],
@@ -106,26 +92,20 @@ class MockData {
     sizeInBytes: 40000,
     createdAt: DateTime.utc(2026, 10, 5, 17),
   );
-  static final List<Attachment> attachments = List.unmodifiable([
-    requestPhoto,
-    portfolioPhoto,
-    insuranceFile,
-    invoiceFile,
+  static final List<Attachment> attachments = List.unmodifiable([requestPhoto, portfolioPhoto, insuranceFile, invoiceFile]);
+  static final List<ProfessionalDocument> professionalDocuments = List.unmodifiable([
+    ProfessionalDocument(
+      id: 'document-insurance',
+      artisanId: 'artisan-1',
+      kind: ProfessionalDocumentKind.liabilityInsurance,
+      title: 'Responsabilite civile professionnelle - demonstration',
+      issuer: 'Assureur Demo',
+      attachment: insuranceFile,
+      issuedAt: createdAt,
+      expiresAt: DateTime.utc(2027, 10, 1),
+      verificationStatus: VerificationStatus.verified,
+    ),
   ]);
-  static final List<ProfessionalDocument> professionalDocuments =
-      List.unmodifiable([
-        ProfessionalDocument(
-          id: 'document-insurance',
-          artisanId: 'artisan-1',
-          kind: ProfessionalDocumentKind.liabilityInsurance,
-          title: 'Responsabilite civile professionnelle - demonstration',
-          issuer: 'Assureur Demo',
-          attachment: insuranceFile,
-          issuedAt: createdAt,
-          expiresAt: DateTime.utc(2027, 10, 1),
-          verificationStatus: VerificationStatus.verified,
-        ),
-      ]);
   static final List<PortfolioProject> portfolioProjects = List.unmodifiable([
     PortfolioProject(
       id: 'portfolio-1',
@@ -139,14 +119,8 @@ class MockData {
     ),
   ]);
 
-  static final firstPeriod = TimeSlot(
-    startsAt: DateTime.utc(2026, 10, 5, 8),
-    endsAt: DateTime.utc(2026, 10, 5, 16),
-  );
-  static final secondPeriod = TimeSlot(
-    startsAt: DateTime.utc(2026, 10, 8, 8),
-    endsAt: DateTime.utc(2026, 10, 8, 16),
-  );
+  static final firstPeriod = TimeSlot(startsAt: DateTime.utc(2026, 10, 5, 8), endsAt: DateTime.utc(2026, 10, 5, 16));
+  static final secondPeriod = TimeSlot(startsAt: DateTime.utc(2026, 10, 8, 8), endsAt: DateTime.utc(2026, 10, 8, 16));
   static final List<WorkRequest> workRequests = List.unmodifiable([
     WorkRequest(
       id: 'request-1',
@@ -157,10 +131,7 @@ class MockData {
       adress: adress,
       propertyType: PropertyType.apartment,
       status: WorkRequestStatus.closed,
-      budget: Budget(
-        minimum: Money(minorUnits: 100000),
-        maximum: Money(minorUnits: 180000),
-      ),
+      budget: Budget(minimum: Money(minorUnits: 100000), maximum: Money(minorUnits: 180000)),
       preferredPeriod: firstPeriod,
       attachments: [requestPhoto],
       createdAt: createdAt,
@@ -176,10 +147,7 @@ class MockData {
       propertyType: PropertyType.apartment,
       urgency: WorkUrgency.scheduled,
       status: WorkRequestStatus.assigned,
-      budget: Budget(
-        minimum: Money(minorUnits: 50000),
-        maximum: Money(minorUnits: 80000),
-      ),
+      budget: Budget(minimum: Money(minorUnits: 50000), maximum: Money(minorUnits: 80000)),
       preferredPeriod: secondPeriod,
       createdAt: createdAt,
       updatedAt: DateTime.utc(2026, 10, 2),
@@ -263,28 +231,17 @@ class MockData {
       customerId: 'customer-1',
       jobId: 'job-1',
       adress: adress,
-      timeSlot: TimeSlot(
-        startsAt: DateTime.utc(2026, 10, 3, 10),
-        endsAt: DateTime.utc(2026, 10, 3, 11),
-      ),
+      timeSlot: TimeSlot(startsAt: DateTime.utc(2026, 10, 3, 10), endsAt: DateTime.utc(2026, 10, 3, 11)),
       status: AppointmentStatus.completed,
       notes: 'Visite technique avant travaux.',
     ),
   ]);
   static final List<Availability> availabilities = List.unmodifiable([
-    Availability(
-      id: 'availability-1',
-      artisanId: 'artisan-1',
-      timeSlot: firstPeriod,
-      status: AvailabilityStatus.unavailable,
-    ),
+    Availability(id: 'availability-1', artisanId: 'artisan-1', timeSlot: firstPeriod, status: AvailabilityStatus.unavailable),
     Availability(
       id: 'availability-2',
       artisanId: 'artisan-1',
-      timeSlot: TimeSlot(
-        startsAt: DateTime.utc(2026, 10, 12, 8),
-        endsAt: DateTime.utc(2026, 10, 12, 17),
-      ),
+      timeSlot: TimeSlot(startsAt: DateTime.utc(2026, 10, 12, 8), endsAt: DateTime.utc(2026, 10, 12, 17)),
       status: AvailabilityStatus.available,
     ),
   ]);
@@ -404,13 +361,7 @@ class MockData {
       createdAt: DateTime.utc(2026, 10, 9, 12),
     ),
   ]);
-  static final List<Favorite> favorites = List.unmodifiable([
-    Favorite(
-      customerId: 'customer-1',
-      artisanId: 'artisan-1',
-      createdAt: createdAt,
-    ),
-  ]);
+  static final List<Favorite> favorites = List.unmodifiable([Favorite(customerId: 'customer-1', artisanId: 'artisan-1', createdAt: createdAt)]);
   static final List<AppNotification> appNotifications = List.unmodifiable([
     AppNotification(
       id: 'notification-1',

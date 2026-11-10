@@ -39,12 +39,7 @@ class _RoleCard extends StatelessWidget {
   final String description;
   final VoidCallback onTap;
 
-  const _RoleCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.onTap,
-  });
+  const _RoleCard({required this.icon, required this.title, required this.description, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +53,7 @@ class _RoleCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                size: 40,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              Icon(icon, size: 40, color: Theme.of(context).colorScheme.primary),
               const SizedBox(height: 16),
               Text(title, style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 8),

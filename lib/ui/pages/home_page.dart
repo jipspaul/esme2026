@@ -17,18 +17,10 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                role == UserRole.artisan
-                    ? Icons.handyman_outlined
-                    : Icons.home_outlined,
-                size: 64,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              Icon(role == UserRole.artisan ? Icons.handyman_outlined : Icons.home_outlined, size: 64, color: Theme.of(context).colorScheme.primary),
               const SizedBox(height: 24),
               Text(
-                firstName.trim().isEmpty
-                    ? 'Bienvenue dans votre espace artisan !'
-                    : 'Bienvenue ${firstName.trim()} !',
+                firstName.trim().isEmpty ? 'Bienvenue dans votre espace artisan !' : 'Bienvenue ${firstName.trim()} !',
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),

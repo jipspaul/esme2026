@@ -8,12 +8,5 @@ class Adress {
   final String? complement;
   final GeoPoint? location;
 
-  const Adress({
-    required this.street,
-    required this.city,
-    required this.postalCode,
-    required this.country,
-    this.complement,
-    this.location,
-  });
+  const Adress({required this.street, required this.city, required this.postalCode, required this.country, this.complement, this.location});
 }

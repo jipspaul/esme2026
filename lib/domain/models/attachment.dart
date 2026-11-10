@@ -21,11 +21,7 @@ class Attachment {
     required this.createdAt,
   }) {
     if (sizeInBytes < 0) {
-      throw ArgumentError.value(
-        sizeInBytes,
-        'sizeInBytes',
-        'Must be non-negative',
-      );
+      throw ArgumentError.value(sizeInBytes, 'sizeInBytes', 'Must be non-negative');
     }
   }
 }

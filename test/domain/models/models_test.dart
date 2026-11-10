@@ -4,12 +4,7 @@ import 'package:esme26/domain/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final now = DateTime.utc(2026, 1, 1);
-const adress = Adress(
-  street: '1 rue du Test',
-  city: 'Paris',
-  postalCode: '75001',
-  country: 'France',
-);
+const adress = Adress(street: '1 rue du Test', city: 'Paris', postalCode: '75001', country: 'France');
 
 QuoteLine line({String currency = 'EUR', double quantity = 1.5}) => QuoteLine(
   description: 'Peinture',
@@ -54,30 +49,22 @@ Attachment attachment() => Attachment(
 
 void main() {
   group('Compatibility and immutability', () {
-    test(
-      'existing constructors and imports still reference domain classes',
-      () {
-        final oldAdress = legacy_adress.Adress(
-          street: adress.street,
-          city: adress.city,
-          postalCode: adress.postalCode,
-          country: adress.country,
-        );
-        final user = legacy_user.User(
-          firstName: 'Test',
-          lastName: 'Client',
-          email: 'client@example.test',
-          birthDateInMillisFromEpoch: 123,
-          adress: oldAdress,
-        );
-        expect(user, isA<User>());
-        expect(oldAdress, isA<Adress>());
-        expect(user.id, isNull);
-        expect(user.roles, {UserRole.customer});
-        expect(user.birthDateInMillisFromEpoch, 123);
-        expect(user.adress, same(oldAdress));
-      },
-    );
+    test('existing constructors and imports still reference domain classes', () {
+      final oldAdress = legacy_adress.Adress(street: adress.street, city: adress.city, postalCode: adress.postalCode, country: adress.country);
+      final user = legacy_user.User(
+        firstName: 'Test',
+        lastName: 'Client',
+        email: 'client@example.test',
+        birthDateInMillisFromEpoch: 123,
+        adress: oldAdress,
+      );
+      expect(user, isA<User>());
+      expect(oldAdress, isA<Adress>());
+      expect(user.id, isNull);
+      expect(user.roles, {UserRole.customer});
+      expect(user.birthDateInMillisFromEpoch, 123);
+      expect(user.adress, same(oldAdress));
+    });
 
     test('roles are copied, immutable, and can represent both profiles', () {
       final roles = {UserRole.customer, UserRole.artisan};
@@ -94,100 +81,70 @@ void main() {
       expect(user.roles, hasLength(2));
       expect(() => user.roles.clear(), throwsUnsupportedError);
       expect(
-        () => User(
-          firstName: 'Test',
-          lastName: 'Client',
-          email: 'client@example.test',
-          birthDateInMillisFromEpoch: 123,
-          adress: adress,
-          roles: {},
-        ),
+        () => User(firstName: 'Test', lastName: 'Client', email: 'client@example.test', birthDateInMillisFromEpoch: 123, adress: adress, roles: {}),
         throwsArgumentError,
       );
     });
 
-    test(
-      'request, portfolio, artisan, messages and disputes copy collections',
-      () {
-        final trades = {'painting'};
-        final media = [attachment()];
-        final areas = [
-          ServiceArea(
-            center: GeoPoint(latitude: 48.8, longitude: 2.3),
-            radiusInKm: 20,
-          ),
-        ];
-        final request = WorkRequest(
-          id: 'request',
-          customerId: 'customer',
-          title: 'Peinture',
-          description: 'Repeindre le salon',
-          tradeIds: trades,
-          adress: adress,
-          propertyType: PropertyType.apartment,
-          attachments: media,
-          createdAt: now,
-          updatedAt: now,
-        );
-        final portfolio = PortfolioProject(
-          id: 'portfolio',
-          artisanId: 'artisan',
-          title: 'Salon',
-          description: 'Peinture',
-          tradeIds: trades,
-          media: media,
-        );
-        final artisan = ArtisanProfile(
-          userId: 'artisan',
-          companyName: 'Peinture Test',
-          registrationNumber: '12345678900012',
-          registrationCountryCode: 'FR',
-          description: 'Peinture interieure',
-          businessAdress: adress,
-          tradeIds: trades,
-          serviceAreas: areas,
-          yearsOfExperience: 5,
-        );
-        final message = Message(
-          id: 'message',
-          conversationId: 'conversation',
-          senderId: 'customer',
-          attachments: media,
-          sentAt: now,
-        );
-        final dispute = Dispute(
-          id: 'dispute',
-          jobId: 'job',
-          openedByUserId: 'customer',
-          reason: 'Finish',
-          description: 'Incomplete work',
-          evidence: media,
-          createdAt: now,
-        );
-        trades.clear();
-        media.clear();
-        areas.clear();
-        for (final ids in [
-          request.tradeIds,
-          portfolio.tradeIds,
-          artisan.tradeIds,
-        ]) {
-          expect(ids, {'painting'});
-          expect(() => ids.clear(), throwsUnsupportedError);
-        }
-        for (final files in [
-          request.attachments,
-          portfolio.media,
-          message.attachments,
-          dispute.evidence,
-        ]) {
-          expect(files, hasLength(1));
-          expect(() => files.clear(), throwsUnsupportedError);
-        }
-        expect(artisan.serviceAreas, hasLength(1));
-        expect(() => artisan.serviceAreas.clear(), throwsUnsupportedError);
-      },
-    );
+    test('request, portfolio, artisan, messages and disputes copy collections', () {
+      final trades = {'painting'};
+      final media = [attachment()];
+      final areas = [ServiceArea(center: GeoPoint(latitude: 48.8, longitude: 2.3), radiusInKm: 20)];
+      final request = WorkRequest(
+        id: 'request',
+        customerId: 'customer',
+        title: 'Peinture',
+        description: 'Repeindre le salon',
+        tradeIds: trades,
+        adress: adress,
+        propertyType: PropertyType.apartment,
+        attachments: media,
+        createdAt: now,
+        updatedAt: now,
+      );
+      final portfolio = PortfolioProject(
+        id: 'portfolio',
+        artisanId: 'artisan',
+        title: 'Salon',
+        description: 'Peinture',
+        tradeIds: trades,
+        media: media,
+      );
+      final artisan = ArtisanProfile(
+        userId: 'artisan',
+        companyName: 'Peinture Test',
+        registrationNumber: '12345678900012',
+        registrationCountryCode: 'FR',
+        description: 'Peinture interieure',
+        businessAdress: adress,
+        tradeIds: trades,
+        serviceAreas: areas,
+        yearsOfExperience: 5,
+      );
+      final message = Message(id: 'message', conversationId: 'conversation', senderId: 'customer', attachments: media, sentAt: now);
+      final dispute = Dispute(
+        id: 'dispute',
+        jobId: 'job',
+        openedByUserId: 'customer',
+        reason: 'Finish',
+        description: 'Incomplete work',
+        evidence: media,
+        createdAt: now,
+      );
+      trades.clear();
+      media.clear();
+      areas.clear();
+      for (final ids in [request.tradeIds, portfolio.tradeIds, artisan.tradeIds]) {
+        expect(ids, {'painting'});
+        expect(() => ids.clear(), throwsUnsupportedError);
+      }
+      for (final files in [request.attachments, portfolio.media, message.attachments, dispute.evidence]) {
+        expect(files, hasLength(1));
+        expect(() => files.clear(), throwsUnsupportedError);
+      }
+      expect(artisan.serviceAreas, hasLength(1));
+      expect(() => artisan.serviceAreas.clear(), throwsUnsupportedError);
+    });
   });
 
   group('Money and pricing', () {
@@ -198,31 +155,13 @@ void main() {
       expect(amount.hashCode, Money(minorUnits: 1250).hashCode);
       expect(Money(minorUnits: 0).minorUnits, 0);
       expect(() => Money(minorUnits: -1), throwsArgumentError);
-      expect(
-        () => Money(minorUnits: 100, currency: 'eur'),
-        throwsArgumentError,
-      );
-      expect(
-        () => amount + Money(minorUnits: 100, currency: 'USD'),
-        throwsArgumentError,
-      );
+      expect(() => Money(minorUnits: 100, currency: 'eur'), throwsArgumentError);
+      expect(() => amount + Money(minorUnits: 100, currency: 'USD'), throwsArgumentError);
     });
 
     test('budget validates ordering and currency', () {
-      expect(
-        Budget(
-          minimum: Money(minorUnits: 100),
-          maximum: Money(minorUnits: 100),
-        ).maximum,
-        Money(minorUnits: 100),
-      );
-      expect(
-        () => Budget(
-          minimum: Money(minorUnits: 200),
-          maximum: Money(minorUnits: 100),
-        ),
-        throwsArgumentError,
-      );
+      expect(Budget(minimum: Money(minorUnits: 100), maximum: Money(minorUnits: 100)).maximum, Money(minorUnits: 100));
+      expect(() => Budget(minimum: Money(minorUnits: 200), maximum: Money(minorUnits: 100)), throwsArgumentError);
       expect(
         () => Budget(
           minimum: Money(minorUnits: 0),
@@ -246,13 +185,7 @@ void main() {
       );
       expect(halfCentTax.tax.minorUnits, 1);
       expect(
-        QuoteLine(
-          description: 'Exempt',
-          quantity: 1,
-          unit: QuoteUnit.item,
-          unitPrice: Money(minorUnits: 100),
-          vatRateBasisPoints: 0,
-        ).tax.minorUnits,
+        QuoteLine(description: 'Exempt', quantity: 1, unit: QuoteUnit.item, unitPrice: Money(minorUnits: 100), vatRateBasisPoints: 0).tax.minorUnits,
         0,
       );
     });
@@ -282,17 +215,8 @@ void main() {
         expect(() => quote(lines: items), throwsArgumentError);
         expect(() => invoice(lines: items), throwsArgumentError);
       }
-      expect(
-        () => quote(lines: [line()], validUntil: now),
-        throwsArgumentError,
-      );
-      expect(
-        () => invoice(
-          lines: [line()],
-          dueAt: now.subtract(const Duration(seconds: 1)),
-        ),
-        throwsArgumentError,
-      );
+      expect(() => quote(lines: [line()], validUntil: now), throwsArgumentError);
+      expect(() => invoice(lines: [line()], dueAt: now.subtract(const Duration(seconds: 1))), throwsArgumentError);
       expect(invoice(lines: [line()], dueAt: now).dueAt, now);
     });
 
@@ -305,13 +229,7 @@ void main() {
     test('VAT must be in the inclusive 0 to 10000 range', () {
       for (final rate in [-1, 10001]) {
         expect(
-          () => QuoteLine(
-            description: 'Test',
-            quantity: 1,
-            unit: QuoteUnit.item,
-            unitPrice: Money(minorUnits: 100),
-            vatRateBasisPoints: rate,
-          ),
+          () => QuoteLine(description: 'Test', quantity: 1, unit: QuoteUnit.item, unitPrice: Money(minorUnits: 100), vatRateBasisPoints: rate),
           throwsArgumentError,
         );
       }
@@ -319,34 +237,24 @@ void main() {
   });
 
   group('Local constraints', () {
-    test(
-      'artisan requires trades, service areas and nonnegative experience',
-      () {
-        final area = ServiceArea(
-          center: GeoPoint(latitude: 0, longitude: 0),
-          radiusInKm: 1,
-        );
-        ArtisanProfile create({
-          Set<String> trades = const {'painting'},
-          List<ServiceArea>? areas,
-          int experience = 0,
-        }) => ArtisanProfile(
-          userId: 'artisan',
-          companyName: 'Test',
-          registrationNumber: '12345678900012',
-          registrationCountryCode: 'FR',
-          description: 'Peinture',
-          businessAdress: adress,
-          tradeIds: trades,
-          serviceAreas: areas ?? [area],
-          yearsOfExperience: experience,
-        );
-        expect(create().yearsOfExperience, 0);
-        expect(() => create(trades: {}), throwsArgumentError);
-        expect(() => create(areas: []), throwsArgumentError);
-        expect(() => create(experience: -1), throwsArgumentError);
-      },
-    );
+    test('artisan requires trades, service areas and nonnegative experience', () {
+      final area = ServiceArea(center: GeoPoint(latitude: 0, longitude: 0), radiusInKm: 1);
+      ArtisanProfile create({Set<String> trades = const {'painting'}, List<ServiceArea>? areas, int experience = 0}) => ArtisanProfile(
+        userId: 'artisan',
+        companyName: 'Test',
+        registrationNumber: '12345678900012',
+        registrationCountryCode: 'FR',
+        description: 'Peinture',
+        businessAdress: adress,
+        tradeIds: trades,
+        serviceAreas: areas ?? [area],
+        yearsOfExperience: experience,
+      );
+      expect(create().yearsOfExperience, 0);
+      expect(() => create(trades: {}), throwsArgumentError);
+      expect(() => create(areas: []), throwsArgumentError);
+      expect(() => create(experience: -1), throwsArgumentError);
+    });
 
     test('attachment size cannot be negative', () {
       expect(
@@ -364,35 +272,20 @@ void main() {
       );
     });
 
-    test(
-      'coordinates include boundaries but reject non-finite/outside values',
-      () {
-        expect(GeoPoint(latitude: -90, longitude: 180).latitude, -90);
-        expect(GeoPoint(latitude: 90, longitude: -180).longitude, -180);
-        for (final latitude in [-90.1, 90.1, double.nan, double.infinity]) {
-          expect(
-            () => GeoPoint(latitude: latitude, longitude: 0),
-            throwsArgumentError,
-          );
-        }
-        for (final longitude in [-180.1, 180.1, double.nan, double.infinity]) {
-          expect(
-            () => GeoPoint(latitude: 0, longitude: longitude),
-            throwsArgumentError,
-          );
-        }
-      },
-    );
+    test('coordinates include boundaries but reject non-finite/outside values', () {
+      expect(GeoPoint(latitude: -90, longitude: 180).latitude, -90);
+      expect(GeoPoint(latitude: 90, longitude: -180).longitude, -180);
+      for (final latitude in [-90.1, 90.1, double.nan, double.infinity]) {
+        expect(() => GeoPoint(latitude: latitude, longitude: 0), throwsArgumentError);
+      }
+      for (final longitude in [-180.1, 180.1, double.nan, double.infinity]) {
+        expect(() => GeoPoint(latitude: 0, longitude: longitude), throwsArgumentError);
+      }
+    });
 
     test('service radius must be positive and finite', () {
       for (final radius in [0.0, -1.0, double.nan, double.infinity]) {
-        expect(
-          () => ServiceArea(
-            center: GeoPoint(latitude: 0, longitude: 0),
-            radiusInKm: radius,
-          ),
-          throwsArgumentError,
-        );
+        expect(() => ServiceArea(center: GeoPoint(latitude: 0, longitude: 0), radiusInKm: radius), throwsArgumentError);
       }
     });
 
@@ -400,49 +293,18 @@ void main() {
       for (final end in [now, now.subtract(const Duration(seconds: 1))]) {
         expect(() => TimeSlot(startsAt: now, endsAt: end), throwsArgumentError);
       }
-      expect(
-        TimeSlot(
-          startsAt: now,
-          endsAt: now.add(const Duration(seconds: 1)),
-        ).startsAt,
-        now,
-      );
+      expect(TimeSlot(startsAt: now, endsAt: now.add(const Duration(seconds: 1))).startsAt, now);
     });
 
     test('messages require nonblank text or an attachment', () {
-      expect(
-        () => Message(
-          id: 'message',
-          conversationId: 'conversation',
-          senderId: 'customer',
-          text: ' \n ',
-          sentAt: now,
-        ),
-        throwsArgumentError,
-      );
-      expect(
-        Message(
-          id: 'message',
-          conversationId: 'conversation',
-          senderId: 'customer',
-          text: 'Bonjour',
-          sentAt: now,
-        ).text,
-        'Bonjour',
-      );
+      expect(() => Message(id: 'message', conversationId: 'conversation', senderId: 'customer', text: ' \n ', sentAt: now), throwsArgumentError);
+      expect(Message(id: 'message', conversationId: 'conversation', senderId: 'customer', text: 'Bonjour', sentAt: now).text, 'Bonjour');
     });
 
     test('review ratings are integers from 1 through 5', () {
       for (final rating in [0, 1, 5, 6]) {
-        Review create() => Review(
-          id: 'review',
-          jobId: 'job',
-          customerId: 'customer',
-          artisanId: 'artisan',
-          rating: rating,
-          comment: 'Test',
-          createdAt: now,
-        );
+        Review create() =>
+            Review(id: 'review', jobId: 'job', customerId: 'customer', artisanId: 'artisan', rating: rating, comment: 'Test', createdAt: now);
         if (rating == 0 || rating == 6) {
           expect(create, throwsArgumentError);
         } else {
@@ -470,10 +332,7 @@ void main() {
 
   test('request to payment workflow uses explicit relationships', () {
     final estimate = quote(lines: [line()]);
-    final period = TimeSlot(
-      startsAt: now,
-      endsAt: now.add(const Duration(hours: 2)),
-    );
+    final period = TimeSlot(startsAt: now, endsAt: now.add(const Duration(hours: 2)));
     final job = Job(
       id: 'job',
       workRequestId: estimate.workRequestId,
@@ -495,13 +354,7 @@ void main() {
       purpose: PaymentPurpose.full,
       createdAt: now,
     );
-    final refund = Refund(
-      id: 'refund',
-      paymentId: payment.id,
-      amount: Money(minorUnits: 100),
-      reason: 'Adjustment',
-      createdAt: now,
-    );
+    final refund = Refund(id: 'refund', paymentId: payment.id, amount: Money(minorUnits: 100), reason: 'Adjustment', createdAt: now);
     expect(job.acceptedQuoteId, estimate.id);
     expect(bill.jobId, job.id);
     expect(payment.invoiceId, bill.id);
@@ -519,12 +372,7 @@ void main() {
       adress: adress,
       timeSlot: period,
     );
-    final availability = Availability(
-      id: 'availability',
-      artisanId: job.artisanId,
-      timeSlot: period,
-      status: AvailabilityStatus.unavailable,
-    );
+    final availability = Availability(id: 'availability', artisanId: job.artisanId, timeSlot: period, status: AvailabilityStatus.unavailable);
     final conversation = Conversation(
       id: 'conversation',
       customerId: job.customerId,
@@ -533,11 +381,7 @@ void main() {
       createdAt: now,
       updatedAt: now,
     );
-    final favorite = Favorite(
-      customerId: job.customerId,
-      artisanId: job.artisanId,
-      createdAt: now,
-    );
+    final favorite = Favorite(customerId: job.customerId, artisanId: job.artisanId, createdAt: now);
     final notification = AppNotification(
       id: 'notification',
       userId: job.customerId,

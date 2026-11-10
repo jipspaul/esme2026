@@ -34,10 +34,7 @@ class _LocationStepState extends State<LocationStep> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Où êtes-vous situé ?',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
+          Text('Où êtes-vous situé ?', style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 8),
           const Text(
             'Renseignez votre localisation pour découvrir les artisans '
@@ -78,8 +75,5 @@ class _LocationStepState extends State<LocationStep> {
     );
   }
 
-  String? _requiredLocation(String? value) =>
-      value == null || value.trim().isEmpty
-      ? 'Ce champ est obligatoire.'
-      : null;
+  String? _requiredLocation(String? value) => value == null || value.trim().isEmpty ? 'Ce champ est obligatoire.' : null;
 }

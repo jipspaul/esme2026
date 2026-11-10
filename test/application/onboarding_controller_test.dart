@@ -63,30 +63,27 @@ void main() {
     expect(controller.isVerifying, isFalse);
   });
 
-  test(
-    'Rejection and typed errors permit retries without completing',
-    () async {
-      reachKyc();
-      var pending = controller.verifyIdentity();
-      repository.request.complete(KycResult.rejected);
-      await pending;
-      expect(controller.kycStatus, KycStatus.rejected);
-      expect(controller.step, OnboardingStep.kyc);
+  test('Rejection and typed errors permit retries without completing', () async {
+    reachKyc();
+    var pending = controller.verifyIdentity();
+    repository.request.complete(KycResult.rejected);
+    await pending;
+    expect(controller.kycStatus, KycStatus.rejected);
+    expect(controller.step, OnboardingStep.kyc);
 
-      pending = controller.verifyIdentity();
-      repository.request.completeError(const KycException('Unavailable'));
-      await pending;
-      expect(controller.kycStatus, KycStatus.failed);
-      expect(controller.kycError, 'Unavailable');
-      expect(controller.canGoBack, isTrue);
+    pending = controller.verifyIdentity();
+    repository.request.completeError(const KycException('Unavailable'));
+    await pending;
+    expect(controller.kycStatus, KycStatus.failed);
+    expect(controller.kycError, 'Unavailable');
+    expect(controller.canGoBack, isTrue);
 
-      pending = controller.verifyIdentity();
-      expect(controller.kycError, isNull);
-      repository.request.complete(KycResult.approved);
-      await pending;
-      expect(controller.isCompleted, isTrue);
-    },
-  );
+    pending = controller.verifyIdentity();
+    expect(controller.kycError, isNull);
+    repository.request.complete(KycResult.approved);
+    await pending;
+    expect(controller.isCompleted, isTrue);
+  });
 
   test('Leaving KYC clears its error', () async {
     reachKyc();

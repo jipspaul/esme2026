@@ -8,10 +8,5 @@ class Availability {
   final TimeSlot timeSlot;
   final AvailabilityStatus status;
 
-  const Availability({
-    required this.id,
-    required this.artisanId,
-    required this.timeSlot,
-    required this.status,
-  });
+  const Availability({required this.id, required this.artisanId, required this.timeSlot, required this.status});
 }

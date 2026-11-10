@@ -4,10 +4,5 @@ class Trade {
   final String? description;
   final String? parentTradeId;
 
-  const Trade({
-    required this.id,
-    required this.name,
-    this.description,
-    this.parentTradeId,
-  });
+  const Trade({required this.id, required this.name, this.description, this.parentTradeId});
 }

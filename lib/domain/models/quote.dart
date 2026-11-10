@@ -14,35 +14,19 @@ class QuoteLine {
   /// 2000 basis points = 20% VAT.
   final int vatRateBasisPoints;
 
-  QuoteLine({
-    required this.description,
-    required this.quantity,
-    required this.unit,
-    required this.unitPrice,
-    required this.vatRateBasisPoints,
-  }) {
+  QuoteLine({required this.description, required this.quantity, required this.unit, required this.unitPrice, required this.vatRateBasisPoints}) {
     if (!quantity.isFinite || quantity <= 0) {
       throw ArgumentError.value(quantity, 'quantity', 'Must be positive');
     }
     if (vatRateBasisPoints < 0 || vatRateBasisPoints > 10000) {
-      throw ArgumentError.value(
-        vatRateBasisPoints,
-        'vatRateBasisPoints',
-        'Expected 0 to 10000',
-      );
+      throw ArgumentError.value(vatRateBasisPoints, 'vatRateBasisPoints', 'Expected 0 to 10000');
     }
   }
 
-  Money get subtotal => Money(
-    minorUnits: (unitPrice.minorUnits * quantity).round(),
-    currency: unitPrice.currency,
-  );
+  Money get subtotal => Money(minorUnits: (unitPrice.minorUnits * quantity).round(), currency: unitPrice.currency);
 
   /// Tax is rounded per line, to the nearest minor unit, half up.
-  Money get tax => Money(
-    minorUnits: (subtotal.minorUnits * vatRateBasisPoints + 5000) ~/ 10000,
-    currency: unitPrice.currency,
-  );
+  Money get tax => Money(minorUnits: (subtotal.minorUnits * vatRateBasisPoints + 5000) ~/ 10000, currency: unitPrice.currency);
 
   Money get total => subtotal + tax;
 }
@@ -85,8 +69,7 @@ class Quote {
   }
 
   String get currency => lines.first.unitPrice.currency;
-  Money get subtotal =>
-      lines.map((line) => line.subtotal).reduce((a, b) => a + b);
+  Money get subtotal => lines.map((line) => line.subtotal).reduce((a, b) => a + b);
   Money get tax => lines.map((line) => line.tax).reduce((a, b) => a + b);
   Money get total => subtotal + tax;
 }

@@ -1,12 +1,4 @@
-enum NotificationKind {
-  workRequest,
-  quote,
-  job,
-  appointment,
-  message,
-  payment,
-  review,
-}
+enum NotificationKind { workRequest, quote, job, appointment, message, payment, review }
 
 class AppNotification {
   final String id;

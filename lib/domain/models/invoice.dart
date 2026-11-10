@@ -41,8 +41,7 @@ class Invoice {
   }
 
   String get currency => lines.first.unitPrice.currency;
-  Money get subtotal =>
-      lines.map((line) => line.subtotal).reduce((a, b) => a + b);
+  Money get subtotal => lines.map((line) => line.subtotal).reduce((a, b) => a + b);
   Money get tax => lines.map((line) => line.tax).reduce((a, b) => a + b);
   Money get total => subtotal + tax;
 }
