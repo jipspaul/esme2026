@@ -30,7 +30,10 @@ class _NameStepState extends State<NameStep> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Comment vous appelez-vous ?', style: Theme.of(context).textTheme.headlineSmall),
+          Text(
+            'Comment vous appelez-vous ?',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: 24),
           TextFormField(
             initialValue: widget.firstName,
@@ -54,12 +57,17 @@ class _NameStepState extends State<NameStep> {
             onPressed: () {
               if (_formKey.currentState!.validate()) widget.onNext();
             },
-            child: const Text('Continuer'),
+            child: Text(
+              'Continuer',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
           ),
         ],
       ),
     );
   }
 
-  String? _requiredName(String? value) => value == null || value.trim().isEmpty ? 'Ce champ est obligatoire.' : null;
+  String? _requiredName(String? value) => value == null || value.trim().isEmpty
+      ? 'Ce champ est obligatoire.'
+      : null;
 }

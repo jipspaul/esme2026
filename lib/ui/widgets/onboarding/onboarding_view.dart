@@ -16,10 +16,19 @@ class OnboardingView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Faisons connaissance'),
+          title: Text(
+            'Faisons connaissance',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           leading: controller.isChoosingRole
               ? null
-              : IconButton(tooltip: 'Retour', onPressed: controller.canGoBack ? controller.requestBack : null, icon: const Icon(Icons.arrow_back)),
+              : IconButton(
+                  tooltip: 'Retour',
+                  onPressed: controller.canGoBack
+                      ? controller.requestBack
+                      : null,
+                  icon: const Icon(Icons.arrow_back),
+                ),
         ),
         body: SafeArea(
           child: Align(
@@ -30,9 +39,15 @@ class OnboardingView extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 children: [
                   if (controller.isChoosingRole)
-                    const Text('Votre profil')
+                    Text(
+                      'Votre profil',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    )
                   else ...[
-                    Text('Étape ${controller.stepNumber} sur ${controller.stepCount}'),
+                    Text(
+                      'Étape ${controller.stepNumber} sur ${controller.stepCount}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                     const SizedBox(height: 8),
                     LinearProgressIndicator(value: controller.progress),
                   ],
